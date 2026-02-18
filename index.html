@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Tracker - Store Helper</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="welcomeOverlay" class="welcome-overlay">
+    <p class="welcome-text">Welcome Nana</p>
+  </div>
+  <div class="container main-content">
+    <header>
+      <h1>📋 Store Sales Tracker</h1>
+      <p class="subtitle">Track your sales easily – today, monthly, and history</p>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="add">Add Sale</button>
+      <button class="tab-btn" data-tab="summary">Summary</button>
+      <button class="tab-btn" data-tab="today">Today</button>
+      <button class="tab-btn" data-tab="monthly">Monthly</button>
+      <button class="tab-btn" data-tab="calendar">Calendar & History</button>
+    </nav>
+
+    <!-- ADD SALE TAB -->
+    <section id="add" class="tab-content active">
+      <div class="card">
+        <h2>Add New Sale</h2>
+        <form id="addForm">
+          <div class="form-row">
+            <label for="itemName">Item name</label>
+            <input type="text" id="itemName" placeholder="e.g. Bread, Milk" required>
+          </div>
+          <div class="form-row">
+            <label for="itemPrice">Price (₱)</label>
+            <input type="number" id="itemPrice" step="0.01" min="0" placeholder="0.00" required>
+          </div>
+          <div class="form-row">
+            <label for="itemQty">Quantity</label>
+            <input type="number" id="itemQty" min="1" value="1" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Add to Today's Sales</button>
+          <button type="button" class="btn btn-small" id="cancelEditBtn" style="display: none; margin-top: 0.5rem;">Cancel Edit</button>
+        </form>
+      </div>
+      <div class="quick-total card" id="todayQuick">
+        <h3>Today's total so far: <span id="todayQuickTotal">₱0.00</span></h3>
+      </div>
+    </section>
+
+    <!-- SUMMARY TAB -->
+    <section id="summary" class="tab-content">
+      <div class="card summary-card">
+        <h2>Daily Summary</h2>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span class="summary-label">Today</span>
+            <span class="summary-value" id="summaryToday">₱0.00</span>
+            <span class="summary-compare" id="summaryTodayCompare"></span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Yesterday</span>
+            <span class="summary-value" id="summaryYesterday">₱0.00</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">This Week</span>
+            <span class="summary-value" id="summaryThisWeek">₱0.00</span>
+            <span class="summary-compare" id="summaryWeekCompare"></span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Last Week</span>
+            <span class="summary-value" id="summaryLastWeek">₱0.00</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Backup & Restore</h2>
+        <p class="summary-desc">Save your sales data to a file so you can restore it if the browser is cleared.</p>
+        <div class="backup-buttons">
+          <button type="button" class="btn btn-primary" onclick="exportBackup()">📥 Export Backup</button>
+          <label class="btn btn-primary" for="importBackupInput">📤 Restore from Backup</label>
+          <input type="file" id="importBackupInput" accept=".json,application/json" style="display: none" onchange="importBackup(event)">
+        </div>
+        <p id="importStatus" class="import-status"></p>
+      </div>
+    </section>
+
+    <!-- TODAY TAB -->
+    <section id="today" class="tab-content">
+      <div class="card">
+        <div class="section-header">
+          <h2>Today's Sales <span id="todayDate"></span></h2>
+          <button type="button" class="btn btn-print" onclick="printToday()">🖨️ Print</button>
+        </div>
+        <div id="todayList" class="sales-list">
+          <p class="empty-msg">No sales yet today.</p>
+        </div>
+        <div class="total-row">
+          <strong>Total for today:</strong>
+          <span id="todayTotal">₱0.00</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MONTHLY TAB -->
+    <section id="monthly" class="tab-content">
+      <div class="card">
+        <div class="section-header">
+          <h2>Monthly Sales</h2>
+          <div class="month-nav">
+            <button type="button" class="btn btn-small" id="prevMonth">← Previous</button>
+            <span id="monthLabel">February 2026</span>
+            <button type="button" class="btn btn-small" id="nextMonth">Next →</button>
+          </div>
+        </div>
+        <button type="button" class="btn btn-print" onclick="printMonthly()">🖨️ Print Monthly</button>
+        <div id="monthlyList" class="sales-list">
+          <p class="empty-msg">No sales this month.</p>
+        </div>
+        <div class="total-row">
+          <strong>Total for month:</strong>
+          <span id="monthlyTotal">₱0.00</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALENDAR & HISTORY TAB -->
+    <section id="calendar" class="tab-content">
+      <div class="card">
+        <h2>Calendar & Sales History</h2>
+        <div class="calendar-controls">
+          <button type="button" class="btn btn-small" id="prevCalMonth">←</button>
+          <span id="calMonthLabel">February 2026</span>
+          <button type="button" class="btn btn-small" id="nextCalMonth">→</button>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+        <div id="selectedDayInfo" class="selected-day-info" style="display: none;">
+          <h3>Sales on <span id="selectedDateLabel"></span></h3>
+          <button type="button" class="btn btn-print" onclick="printSelectedDay()">🖨️ Print</button>
+          <div id="selectedDayList" class="sales-list"></div>
+          <div class="total-row">
+            <strong>Total:</strong>
+            <span id="selectedDayTotal">₱0.00</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

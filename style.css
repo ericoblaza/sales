@@ -1,0 +1,573 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --success: #059669;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --shadow: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Welcome overlay */
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  opacity: 1;
+  transition: opacity 0.8s ease-out;
+  pointer-events: none;
+}
+
+.welcome-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.welcome-overlay.hidden {
+  display: none;
+}
+
+.welcome-text {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: white;
+  letter-spacing: 0.1em;
+  margin: 0;
+  animation: welcomeFadeIn 1.2s ease-out;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+}
+
+@keyframes welcomeFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.main-content {
+  opacity: 0;
+  animation: contentFadeIn 0.8s ease-out 1.5s forwards;
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body.welcome-done .main-content {
+  animation: none;
+  opacity: 1;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--card);
+  padding: 0.5rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.tab-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 0.65rem 1rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* Tab content */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 1rem;
+}
+
+.card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.card h3 {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  margin-bottom: 0;
+}
+
+/* Form */
+.form-row {
+  margin-bottom: 1rem;
+}
+
+.form-row label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.form-row input {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-row input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* Buttons */
+.btn {
+  padding: 0.65rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  width: 100%;
+  padding: 0.75rem;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-print {
+  background: var(--success);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.btn-print:hover {
+  filter: brightness(1.1);
+}
+
+.btn-small {
+  background: var(--bg);
+  color: var(--text);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn-small:hover {
+  background: var(--border);
+}
+
+/* Action buttons (Edit, Delete) */
+.btn-action {
+  padding: 0.25rem 0.4rem;
+  margin: 0 2px;
+  border: none;
+  background: var(--bg);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.btn-action:hover {
+  background: var(--border);
+}
+
+.btn-action.btn-delete:hover {
+  background: #fecaca;
+}
+
+.btn-action.btn-edit:hover {
+  background: #bfdbfe;
+}
+
+td.actions {
+  white-space: nowrap;
+}
+
+/* Sales lists */
+.sales-list {
+  margin: 1rem 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.sales-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sales-list th {
+  text-align: left;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid var(--border);
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.sales-list td {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sales-list tr:last-child td {
+  border-bottom: none;
+}
+
+.empty-msg {
+  color: var(--text-muted);
+  padding: 2rem;
+  text-align: center;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 2px solid var(--primary);
+  font-size: 1.1rem;
+}
+
+.total-row span {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.quick-total {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.quick-total h3 {
+  color: var(--primary);
+}
+
+.quick-total #todayQuickTotal {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* Summary tab */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.summary-item {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 1rem;
+  border: 1px solid var(--border);
+}
+
+.summary-item .summary-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.summary-item .summary-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.summary-item .summary-compare {
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+}
+
+.summary-compare.up {
+  color: var(--success);
+}
+
+.summary-compare.down {
+  color: #dc2626;
+}
+
+.summary-desc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.backup-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.backup-buttons .btn {
+  flex: 1;
+  min-width: 140px;
+}
+
+.import-status {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.import-status.success {
+  color: var(--success);
+}
+
+.import-status.error {
+  color: #dc2626;
+}
+
+/* Month nav */
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#monthLabel, #calMonthLabel {
+  font-weight: 600;
+  min-width: 140px;
+  text-align: center;
+}
+
+/* Calendar */
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 8px;
+  background: var(--bg);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.calendar-day:hover {
+  background: var(--border);
+}
+
+.calendar-day.has-sales {
+  background: #dbeafe;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.calendar-day.has-sales:hover {
+  background: #bfdbfe;
+}
+
+.calendar-day.other-month {
+  opacity: 0.4;
+}
+
+.calendar-day.today {
+  outline: 2px solid var(--primary);
+}
+
+.calendar-day.selected {
+  background: var(--primary) !important;
+  color: white !important;
+}
+
+.calendar-day.selected .date-total {
+  color: rgba(255,255,255,0.9) !important;
+}
+
+.calendar-day .date-num {
+  font-size: 0.9rem;
+}
+
+.calendar-day .date-total {
+  font-size: 0.65rem;
+  margin-top: 2px;
+  color: var(--text-muted);
+}
+
+.calendar-day.has-sales .date-total {
+  color: var(--primary);
+}
+
+.calendar-day-header {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.selected-day-info {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.selected-day-info h3 {
+  margin-bottom: 0.75rem;
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white;
+  }
+
+  .tabs, .tab-btn, .btn-print, .btn-primary, .add-sale-section, .month-nav .btn-small,
+  .calendar-controls .btn-small, nav, .no-print {
+    display: none !important;
+  }
+
+  .tab-content {
+    display: block !important;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    page-break-inside: avoid;
+  }
+
+  .print-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #333;
+  }
+
+  .print-header h2 {
+    font-size: 1.25rem;
+  }
+}
